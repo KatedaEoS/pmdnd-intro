@@ -1,0 +1,1392 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PMDnD 性格测试</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Noto+Serif+SC:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- ═══════════════════ 欢迎页 ═══════════════════ -->
+    <section id="screen-welcome" class="page-section fade-in">
+      <div
+        class="content-wrap text-center"
+        style="display: flex; flex-direction: column; gap: 28px"
+      >
+        <!-- 标题 -->
+        <div class="space-y-3">
+          <div
+            style="
+              font-family: &quot;MedievalSharp&quot;, serif;
+              font-size: 13px;
+              letter-spacing: 5px;
+              color: #8b6f47;
+            "
+          >
+            POKÉMON MYSTERY DUNGEONS & DRAGONS
+          </div>
+          <h1
+            style="
+              font-size: 42px;
+              font-weight: bold;
+              color: #e8d48b;
+              text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+              letter-spacing: 4px;
+            "
+          >
+            属于宝可梦的人格测试
+          </h1>
+          <div class="ornament-hr"><span>PERSONALITY TEST</span></div>
+        </div>
+
+        <!-- 介绍面板 -->
+        <div class="panel" style="padding: 24px">
+          <p style="font-size: 15px; line-height: 1.8; text-align: left">
+            欢迎来到一个没有训练家、没有精灵球、没有道馆徽章的世界。<br /><br />
+            这里是<b>不可思议的宝可梦世界</b>——一片由风、草、水、雾、砂五块大陆和数片海洋组成的广袤土地。宝可梦们在这里建造城市、经营商铺、创办学校、探索迷宫、信仰神祇。没有谁是谁的附属——每一位宝可梦都有自己的名字、自己的职业、自己的信仰、自己想要守护的人。<br /><br />
+            在广场镇的探险公会大厅里，新手探险者们接过自己的第一枚公会徽章；在宝藏镇的胖可丁公会中，任务栏上贴满了来自四方的委托。变隐龙商会的成员带着货源穿过不可思议迷宫的每一层；大嘴鸥邮局的翅膀划过每一片海域的天空。而在这片大地的更深处——在阿尔宙斯的沉默注视、帝牙卢卡编织的时间经纬、凤王燃起的新生火焰之中——宝可梦们正在用自己的声音讲述属于自己的传奇。<br /><br />
+            这不是一个关于「成为最强」的故事。这是一个关于<b>选择</b>的故事——选择成为谁、选择相信什么、选择和谁并肩走下去。
+          </p>
+          <br />
+          <div class="ornament-hr"><span>DISCOVER</span></div>
+          <p
+            style="
+              font-size: 14px;
+              line-height: 1.8;
+              text-align: left;
+              margin-top: 4px;
+            "
+          >
+            回答 80 道问题，探索你在 PMDnD 世界中的角色——
+          </p>
+          <ul
+            style="
+              list-style: none;
+              text-align: left;
+              font-size: 14px;
+              line-height: 2.2;
+            "
+          >
+            <li>⬦ 你最适合的<b>宝可梦种族</b></li>
+            <li>⬦ 适合你的<b>战斗职业</b></li>
+            <li>⬦ 你在<b>九宫格阵营</b>中的位置</li>
+            <li>⬦ 会被哪位<b>神祇</b>所青睐</li>
+          </ul>
+        </div>
+
+        <button id="btn-start" class="btn-start">BEGIN YOUR JOURNEY</button>
+
+        <p style="font-size: 11px; color: #8b6f47; text-align: center; line-height: 1.8; margin-top: 24px; max-width: 480px;">
+          本测试基于 PMDnD（Pokémon Mystery Dungeons &amp; Dragons）世界观。<br />
+          宝可梦种族值按 PMDnD 规则标准化，蛇类宝可梦身高折半，身高低于 0.9m 者已按规则调整。<br />
+          精灵图资源来自 <a href="https://sprites.pmdcollab.org/" style="color:#c9a036;">PMDCollab/SpriteCollab</a>（CC BY-NC 4.0）。<br />
+          PMDnD © 2026 <a href="https://space.bilibili.com/12212409" style="color:#c9a036;">空探的凯特</a>。<br />
+          本测试项目以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" style="color:#c9a036;">CC BY-NC-SA 4.0</a> 协议发布。
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ 问答页 ═══════════════════ -->
+    <section
+      id="screen-quiz"
+      class="hidden page-section"
+      style="justify-content: stretch"
+    >
+      <!-- 进度区 -->
+      <div
+        class="content-wrap"
+        style="padding-top: 20px; padding-bottom: 0; flex: none"
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+          "
+        >
+          <span
+            id="quiz-group-label"
+            style="
+              font-family: &quot;MedievalSharp&quot;, serif;
+              font-size: 12px;
+              letter-spacing: 3px;
+              color: #8b6f47;
+            "
+          ></span>
+          <span
+            id="quiz-progress-text"
+            style="font-size: 13px; color: #8b6f47"
+          ></span>
+        </div>
+        <div class="progress-track">
+          <div
+            id="quiz-progress-fill"
+            class="progress-fill"
+            style="width: 0%"
+          ></div>
+        </div>
+      </div>
+
+      <!-- 题目区 -->
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div
+          id="quiz-card"
+          class="content-wrap fade-in"
+          style="display: flex; flex-direction: column; gap: 24px"
+        ></div>
+      </div>
+
+      <!-- 底部 -->
+      <div
+        class="content-wrap"
+        style="
+          padding-top: 0;
+          padding-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
+          flex: none;
+        "
+      >
+        <button id="btn-prev" class="btn-ghost hidden">← 上一题</button>
+        <span></span>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ 结果页 ═══════════════════ -->
+    <section id="screen-result" class="hidden page-section">
+      <h2
+        style="
+          font-size: 28px;
+          font-weight: bold;
+          color: #e8d48b;
+          margin-bottom: 24px;
+          text-align: center;
+          letter-spacing: 2px;
+        "
+      >
+        你的冒险者档案
+      </h2>
+
+      <div
+        class="char-sheet sheet-wrap"
+        style="border-radius: 4px; overflow: hidden"
+      >
+        <!-- 标题栏 -->
+        <div class="banner">⬡ CHARACTER RECORD ⬡</div>
+
+        <!-- 上半区：种族 + 阵营 -->
+        <div class="grid-2">
+          <!-- 左：头像 + 名字 + 种族值 -->
+          <div
+            class="cell"
+            style="display: flex; gap: 16px; align-items: center"
+          >
+            <img
+              id="res-portrait"
+              src=""
+              alt=""
+              class="pixel-portrait"
+              style="
+                width: 88px;
+                height: 88px;
+                border: 2px solid #8b6f47;
+                border-radius: 4px;
+                flex-shrink: 0;
+              "
+            />
+            <div>
+              <div
+                id="res-species-name"
+                style="font-size: 22px; font-weight: bold; color: #3a1f0d"
+              ></div>
+              <div
+                id="res-species-stats"
+                style="
+                  font-size: 12px;
+                  color: #5c3d2e;
+                  margin-top: 6px;
+                  line-height: 1.8;
+                "
+              ></div>
+            </div>
+          </div>
+          <!-- 右：阵营 -->
+          <div
+            class="cell cell-r"
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+            "
+          >
+            <div class="label">ALIGNMENT</div>
+            <div
+              id="res-alignment-name"
+              style="font-size: 20px; font-weight: bold; color: #3a1f0d"
+            ></div>
+            <div
+              id="res-alignment-desc"
+              style="font-size: 12px; color: #6b4c2a; text-align: center"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 下半区：职业 + 描述 + 神祇 -->
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(139, 111, 71, 0.3);
+          "
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 4px;
+              width: 100px;
+              flex-shrink: 0;
+            "
+          >
+            <div class="label">CLASS</div>
+            <div
+              id="res-class-name"
+              style="font-size: 20px; font-weight: bold; color: #3a1f0d"
+            ></div>
+          </div>
+          <div
+            id="res-class-desc"
+            style="
+              flex: 1;
+              font-size: 11px;
+              color: #6b4c2a;
+              text-align: center;
+              line-height: 1.5;
+              padding: 0 12px;
+            "
+          ></div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 4px;
+              width: 100px;
+              flex-shrink: 0;
+            "
+          >
+            <div class="label">DEITY</div>
+            <div
+              id="res-deity-name"
+              style="
+                font-size: 20px;
+                font-weight: bold;
+                color: #3a1f0d;
+                text-align: center;
+              "
+            ></div>
+            <div
+              id="res-deity-sub"
+              style="font-size: 12px; color: #6b4c2a"
+            ></div>
+          </div>
+        </div>
+
+        <!-- 人格描述 -->
+        <div
+          id="res-personality"
+          style="
+            padding: 10px 20px;
+            font-size: 13px;
+            color: #5c3d2e;
+            line-height: 1.8;
+          "
+        ></div>
+
+        <!-- 底栏：五维对比 -->
+        <div
+          style="
+            padding: 14px 20px;
+            border-top: 1px solid rgba(139, 111, 71, 0.3);
+          "
+        >
+          <div class="label" style="margin-bottom: 8px">
+            DIMENSION COMPARISON
+          </div>
+          <div
+            id="res-dims"
+            style="display: flex; flex-direction: column; gap: 6px"
+          ></div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 11px;
+              color: #8b6f47;
+              margin-top: 8px;
+            "
+          >
+            <span>条形为你的情况</span>
+            <span>│ 竖线刻度为该宝可梦的平均情况</span>
+          </div>
+        </div>
+
+        <!-- 阵营九宫格 + 神祇标签 -->
+        <div
+          style="
+            padding: 14px 20px;
+            border-top: 1px solid rgba(139, 111, 71, 0.3);
+          "
+        >
+          <div class="label" style="margin-bottom: 8px">ALIGNMENT & DEITY</div>
+          <div style="display: flex; gap: 20px; align-items: flex-start">
+            <div class="align-grid" id="res-align-grid"></div>
+            <div
+              id="res-top-tags"
+              style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                font-size: 11px;
+                color: #5c3d2e;
+              "
+            ></div>
+          </div>
+        </div>
+
+        <!-- 职业维度对比（可折叠） -->
+        <div style="border-top: 1px solid rgba(139, 111, 71, 0.3)">
+          <div
+            id="class-dims-toggle"
+            onclick="
+              const body = document.getElementById('class-dims-body');
+              const arrow = document.getElementById('class-dims-arrow');
+              body.classList.toggle('hidden');
+              arrow.textContent = body.classList.contains('hidden') ? '▸' : '▾';
+            "
+            style="
+              padding: 8px 20px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              user-select: none;
+            "
+          >
+            <span id="class-dims-arrow" style="font-size: 12px; color: #8b6f47"
+              >▸</span
+            >
+            <span class="label">CLASS DIMENSIONS</span>
+          </div>
+          <div id="class-dims-body" class="hidden" style="padding: 0 20px 10px">
+            <div
+              id="res-class-dims"
+              style="display: flex; flex-direction: column; gap: 4px"
+            ></div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+                color: #8b6f47;
+                margin-top: 8px;
+              "
+            >
+              <span>条形为你的情况</span>
+              <span>│ 竖线刻度为该职业的平均情况</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sheet-wrap" style="margin-top: 16px">
+        <div class="label" style="margin-bottom: 6px; text-align: center">
+          与你接近的宝可梦 · 点击替换
+        </div>
+        <div
+          id="res-alternatives"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+          "
+        ></div>
+      </div>
+
+      <div class="sheet-wrap" style="margin-top: 12px">
+        <div class="label" style="margin-bottom: 6px; text-align: center">
+          切换职业 · 点击任选
+        </div>
+        <div
+          id="res-class-choices"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+          "
+        ></div>
+      </div>
+
+      <div class="sheet-wrap" style="margin-top: 12px">
+        <div class="label" style="margin-bottom: 6px; text-align: center">
+          切换神祇青睐 · 点击任选
+        </div>
+        <div
+          id="res-deity-choices"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+          "
+        ></div>
+      </div>
+
+      <button id="btn-restart" class="btn-outline" style="margin-top: 24px">
+        重新测试
+      </button>
+
+      <div class="content-wrap" style="margin-top: 32px; padding-bottom: 32px">
+        <p
+          style="
+            font-size: 12px;
+            color: #8b6f47;
+            text-align: center;
+            line-height: 1.8;
+          "
+        >
+          本测试基于 PMDnD（Pokémon Mystery Dungeons &amp; Dragons）世界观。<br />
+          宝可梦种族值按 PMDnD 规则标准化（各项缩放到总和 600），蛇类宝可梦身高折半，<br />
+          身高低于 0.9m 者已按规则调整。部分宝可梦被排除（神祇、悖谬宝可梦等）。<br />
+          精灵图资源来自 <a href="https://sprites.pmdcollab.org/" style="color:#c9a036;">PMDCollab/SpriteCollab</a>（CC BY-NC 4.0）。<br />
+          PMDnD © 2026 <a href="https://space.bilibili.com/12212409" style="color:#c9a036;">空探的凯特</a>。<br />
+          本测试项目以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" style="color:#c9a036;">CC BY-NC-SA 4.0</a> 协议发布。
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ JS 数据 ═══════════════════ -->
+    <script src="data.js"></script>
+    <script src="questions/race-questions.js"></script>
+    <script src="questions/class-questions.js"></script>
+    <script src="questions/alignment-questions.js"></script>
+    <script src="questions/deity-questions.js"></script>
+
+    <!-- ═══════════════════ JS 逻辑 ═══════════════════ -->
+    <script>
+      // ═══════════════════════════════════════════════════
+      //  题库 — 每题选项同时影响多个维度
+      // ═══════════════════════════════════════════════════
+      const QUESTIONS = [
+        ...RACE_QUESTIONS,
+        ...CLASS_QUESTIONS,
+        ...ALIGNMENT_QUESTIONS,
+        ...DEITY_QUESTIONS,
+      ];
+      const TOTAL_QUESTIONS = QUESTIONS.length;
+
+      const STATE = {
+        screen: "welcome",
+        questionIndex: 0,
+        questionShownAt: 0, // 题目渲染时间戳
+        answers: [],
+        accumulator: {},
+      };
+
+      // ── 答题时间权重: 纠结越久得分越低 ──
+      function timeWeight(seconds) {
+        return Math.max(0.4, Math.min(1.0, 1.0 - (seconds - 30) * 0.05));
+      }
+
+      function showScreen(name) {
+        document
+          .querySelectorAll('[id^="screen-"]')
+          .forEach((el) => el.classList.add("hidden"));
+        document.getElementById("screen-" + name).classList.remove("hidden");
+        STATE.screen = name;
+      }
+
+      function startQuiz() {
+        STATE.questionIndex = 0;
+        STATE.answers = [];
+        STATE.accumulator = {};
+        showScreen("quiz");
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        STATE.questionShownAt = Date.now();
+        const q = QUESTIONS[STATE.questionIndex];
+        document.getElementById("quiz-group-label").textContent = q.groupLabel;
+        document.getElementById("quiz-progress-text").textContent =
+          `${STATE.questionIndex + 1} / ${TOTAL_QUESTIONS}`;
+        document.getElementById("quiz-progress-fill").style.width =
+          `${(STATE.questionIndex / TOTAL_QUESTIONS) * 100}%`;
+
+        const btnPrev = document.getElementById("btn-prev");
+        if (STATE.questionIndex > 0) {
+          btnPrev.classList.remove("hidden");
+          btnPrev.onclick = prevQuestion;
+        } else {
+          btnPrev.classList.add("hidden");
+        }
+
+        document.getElementById("quiz-card").innerHTML = `
+    <h2 style="font-size:20px;font-weight:bold;color:#f2e6c9;text-align:left;line-height:1.7;">${q.text}</h2>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${q.options
+        .map(
+          (opt, i) => `
+        <button class="option-btn" onclick="selectAnswer(${i})">
+          <span class="prefix">${"ABCD"[i]}</span>
+          <span>${opt.text}</span>
+        </button>
+      `,
+        )
+        .join("")}
+    </div>
+  `;
+      }
+
+      function selectAnswer(optionIndex) {
+        const q = QUESTIONS[STATE.questionIndex];
+        const scores = q.options[optionIndex].scores;
+        const elapsed = (Date.now() - STATE.questionShownAt) / 1000;
+        const weight = timeWeight(elapsed);
+        for (const [dim, val] of Object.entries(scores)) {
+          STATE.accumulator[dim] = (STATE.accumulator[dim] || 0) + val * weight;
+        }
+        STATE.answers.push({
+          questionId: q.id,
+          optionIndex,
+          scores,
+          elapsed,
+          weight,
+        });
+        if (q.options[optionIndex].sizePref)
+          STATE.sizePref = q.options[optionIndex].sizePref;
+        if (STATE.questionIndex < TOTAL_QUESTIONS - 1) {
+          STATE.questionIndex++;
+          renderQuestion();
+        } else {
+          showResults();
+        }
+      }
+
+      function prevQuestion() {
+        if (STATE.questionIndex === 0) return;
+        const last = STATE.answers.pop();
+        for (const [dim, val] of Object.entries(last.scores)) {
+          STATE.accumulator[dim] -= val * (last.weight || 1);
+        }
+        STATE.questionIndex--;
+        renderQuestion();
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  向量距离
+      // ═══════════════════════════════════════════════════
+      function euclidean(a, b) {
+        let sum = 0;
+        for (let i = 0; i < a.length; i++) sum += (a[i] - b[i]) ** 2;
+        return Math.sqrt(sum);
+      }
+      function manhattan(a, b) {
+        let sum = 0;
+        for (let i = 0; i < a.length; i++) sum += Math.abs(a[i] - b[i]);
+        return sum;
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  排除列表 — 非普通宝可梦
+      // ═══════════════════════════════════════════════════
+      const EXCLUDED = new Set([
+        // 神祇 (32)
+        151, 249, 250, 382, 383, 384, 385, 480, 481, 482, 483, 484, 486, 487,
+        488, 491, 493, 494, 643, 644, 646, 648, 716, 717, 718, 791, 792, 800,
+        888, 889, 890, 898,
+        // 神祇的直属部下 + 地方性神 (27)
+        144, 145, 146, 243, 244, 245, 377, 378, 379, 894, 895, 638, 639, 640,
+        647, 641, 642, 645, 905, 785, 786, 787, 788, 1001, 1002, 1003, 1004,
+        // 不再能自然出现 (15)
+        81, 82, 462, 137, 233, 474, 150, 772, 773, 880, 881, 882, 883, 479, 649,
+        // 悖谬宝可梦，不包含故勒顿(1007)和密勒顿(1008) (20)
+        984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995, 1005, 1006,
+        1009, 1010, 1020, 1021, 1022, 1023,
+      ]);
+
+      // ═══════════════════════════════════════════════════
+      //  种族匹配
+      // ═══════════════════════════════════════════════════
+      const RACE_DIMS = ["攻势", "守护", "愈心", "急速", "秘法"];
+
+      // 正态 CDF 归一化：每维度 ~N(0, n*1.6)，用 logistic 近似
+      function normCDF(raw, nQuestions) {
+        const sigma = Math.sqrt(nQuestions * 1.6);
+        return 10 / (1 + Math.exp((-1.814 * raw) / sigma));
+      }
+
+      function matchSpecies() {
+        const nRace = QUESTIONS.filter((q) => q.group === "race").length;
+        let raw = RACE_DIMS.map((d) => STATE.accumulator[d] || 0);
+        let player = raw.map((v) => normCDF(v, nRace));
+
+        // 体型惩罚：玩家偏好 vs 宝可梦实际体型
+        const sizeOrder = { 小型: 0, 中型: 1, 大型: 2 };
+        const prefSizeMap = { 小型: 0, 中小: 0.5, 中大: 1.5, 大型: 2 };
+        const prefSizeVal = prefSizeMap[STATE.sizePref] ?? 1; // 默认中型
+
+        let results = [];
+        for (const s of PMDND_DATA.species) {
+          if (EXCLUDED.has(s[0])) continue;
+          const pokeVec = [s[4], s[5], s[6], s[7], s[8]];
+          const d = manhattan(player, pokeVec);
+          const pokeSizeVal = sizeOrder[s[3]] ?? 1;
+          const sizePenalty = Math.abs(prefSizeVal - pokeSizeVal) * 3.0;
+          results.push({
+            id: s[0],
+            name: s[1],
+            size: s[3],
+            pokeVec,
+            stats: [s[9], s[10], s[11], s[12], s[13], s[14]],
+            dist: d + sizePenalty,
+          });
+        }
+        results.sort((a, b) => a.dist - b.dist);
+
+        return {
+          playerVec: player,
+          top: results.slice(0, 1)[0],
+          alternatives: results.slice(0, 20),
+        };
+      }
+
+      function renderComparisonBars(playerVec, pokeVec) {
+        const labels = ["攻势", "守护", "愈心", "急速", "秘法"];
+        const colors = ["#c04040", "#8b6914", "#4a90c4", "#c9a036", "#7c4848"];
+        return labels
+          .map(
+            (label, i) => `
+    <div class="dim-row">
+      <span class="dim-label">${label}</span>
+      <div class="dim-bar-wrap">
+        <div class="dim-bar-fill" style="width:${playerVec[i] * 10}%;background:${colors[i]};"></div>
+        <div class="dim-bar-tick" style="left:${pokeVec[i] * 10}%;"></div>
+      </div>
+      <span class="dim-val">${playerVec[i].toFixed(1)}</span>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  职业匹配
+      // ═══════════════════════════════════════════════════
+      const CLASS_DIMS = [
+        "施法者",
+        "前排",
+        "强攻",
+        "潜袭",
+        "守护",
+        "支援",
+        "控场",
+        "奉献",
+        "自律",
+      ];
+
+      function matchClass() {
+        let raw = CLASS_DIMS.map((d) => STATE.accumulator["职业·" + d] || 0);
+        const scale = 5.0 / Math.max(1, Math.max(...raw.map(Math.abs)));
+        let player = raw.map((v) => Math.max(0, Math.min(10, 5.0 + v * scale)));
+
+        let best = null,
+          bestDist = Infinity;
+        for (const c of PMDND_DATA.classes) {
+          const clsVec = [c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9]];
+          const d = manhattan(player, clsVec);
+          if (d < bestDist) {
+            bestDist = d;
+            best = c;
+          }
+        }
+        return {
+          name: best[0],
+          playerVec: player,
+          clsVec: [
+            best[1],
+            best[2],
+            best[3],
+            best[4],
+            best[5],
+            best[6],
+            best[7],
+            best[8],
+            best[9],
+          ],
+          dist: bestDist.toFixed(1),
+        };
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  神祇匹配
+      // ═══════════════════════════════════════════════════
+      const DEITY_MAX = {
+  "亚克诺姆": 24,
+  "伊裴尔塔尔": 16,
+  "克雷色利亚": 25,
+  "凤王": 34,
+  "哲尔尼亚斯": 31,
+  "固拉多": 4,
+  "基拉祈": 8,
+  "基格尔德": 20,
+  "奈克洛兹玛": 3,
+  "帕路奇亚": 10,
+  "帝牙卢卡": 15,
+  "捷克罗姆": 36,
+  "无极汰那": 3,
+  "梦幻": 18,
+  "比克提尼": 39,
+  "洛奇亚": 6,
+  "烈空坐": 43,
+  "理念信仰": 3,
+  "由克希": 70,
+  "盖欧卡": 6,
+  "索尔迦雷欧": 29,
+  "美洛耶塔": 57,
+  "艾姆利多": 41,
+  "苍响与藏玛然特": 56,
+  "莱希拉姆": 32,
+  "蕾冠王": 41,
+  "达克莱伊": 15,
+  "酋雷姆": 33,
+  "阿尔宙斯": 23,
+  "雷吉奇卡斯": 7,
+  "露奈雅拉": 10,
+  "骑拉帝纳": 21
+};
+
+      function matchDeity(alignmentName) {
+        const compat = compatibleDeities(alignmentName);
+        if (compat.length === 0)
+          return {
+            name: "理念信仰",
+            tags: ["原力", "愿力"],
+            matchBy: "无神祇兼容",
+          };
+
+        const tagScores = {};
+        for (const [dim, val] of Object.entries(STATE.accumulator)) {
+          if (!dim.startsWith("神祇·")) continue;
+          const tag = dim.substring(3);
+          for (const deity of PMDND_DATA.deities) {
+            if (!compat.has(deity[0])) continue;
+            if (
+              deity[3].some(
+                (t) => t === tag || tag.includes(t) || t.includes(tag),
+              )
+            ) {
+              // 阵营亲密度加权：相同阵营满分，兼容但不同 ×0.8
+              const proximity = deity[1] === alignmentName ? 1.0 : 0.8;
+              const maxScore = DEITY_MAX[deity[0]] || 1;
+              tagScores[deity[0]] =
+                (tagScores[deity[0]] || 0) + (val * proximity) / maxScore;
+            }
+          }
+        }
+
+        // 排序取 top-N
+        let sorted = Object.entries(tagScores)
+          .filter(([, s]) => s > 0)
+          .sort((a, b) => b[1] - a[1]);
+
+        if (sorted.length === 0)
+          return {
+            top: [
+              { name: "理念信仰", tags: ["原力", "愿力"], matchBy: "得分均≤0" },
+            ],
+          };
+
+        const top = sorted.slice(0, 8).map(([name, score]) => {
+          const dInfo = PMDND_DATA.deities.find((d) => d[0] === name);
+          return {
+            name,
+            alignment: dInfo[1],
+            rank: dInfo[2],
+            tags: dInfo[3],
+            score,
+          };
+        });
+        return { top };
+      }
+
+      function compatibleDeities(playerAlign) {
+        const compat = new Set();
+        for (const d of PMDND_DATA.deities) {
+          const da = d[1];
+          const isGood = da.includes("善良");
+          const playerIsGood = playerAlign.includes("善良");
+          const isTN = da === "绝对中立";
+          let ok = false;
+          if (isGood && playerIsGood) {
+            ok = true;
+          } else if (isTN) {
+            ok = playerAlign === "绝对中立";
+          } else {
+            ok = alignmentDist(da, playerAlign) <= 1;
+          }
+          if (ok) compat.add(d[0]);
+        }
+        return compat;
+      }
+
+      function alignmentDist(a, b) {
+        const g = { 守序: 0, 中立: 1, 混乱: 2 };
+        const m = { 善良: 0, 中立: 1, 邪恶: 2 };
+        const parse = (s) =>
+          s.includes("守序")
+            ? [
+                "守序",
+                s.includes("善良")
+                  ? "善良"
+                  : s.includes("邪恶")
+                    ? "邪恶"
+                    : "中立",
+              ]
+            : s.includes("混乱")
+              ? [
+                  "混乱",
+                  s.includes("善良")
+                    ? "善良"
+                    : s.includes("邪恶")
+                      ? "邪恶"
+                      : "中立",
+                ]
+              : [
+                  "中立",
+                  s.includes("善良")
+                    ? "善良"
+                    : s.includes("邪恶")
+                      ? "邪恶"
+                      : "中立",
+                ];
+        const [a1, a2] = parse(a);
+        const [b1, b2] = parse(b);
+        return Math.abs(g[a1] - g[b1]) + Math.abs(m[a2] - m[b2]);
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  阵营匹配
+      // ═══════════════════════════════════════════════════
+      function matchAlignment() {
+        const law = STATE.accumulator["阵营·守序"] || 0;
+        const chaos = STATE.accumulator["阵营·混乱"] || 0;
+        const good = STATE.accumulator["阵营·善良"] || 0;
+        const evil = STATE.accumulator["阵营·邪恶"] || 0;
+
+        const lcScore = law - chaos;
+        const lcAxis = lcScore > 1 ? "守序" : lcScore < -1 ? "混乱" : "中立";
+
+        const geScore = good - evil;
+        const geAxis = geScore > 0 ? "善良" : geScore < 0 ? "邪恶" : "中立";
+
+        const fullName = `${lcAxis}${geAxis}`.replace("中立中立", "绝对中立");
+        const desc = {
+          守序善良: "相信规则<br>能让善良持久",
+          中立善良: "做好事不需要理由<br>也不需要许可",
+          混乱善良: "自由比规矩重要<br>但绝不能伤害无辜",
+          守序中立: "秩序本身<br>即是价值",
+          绝对中立: "世间一切<br>皆有自然的平衡",
+          混乱中立: "我是自由的<br>这就够了",
+          守序邪恶: "用严密的体系<br>获取自己想要的",
+          中立邪恶: "只要对自己有利<br>什么都行",
+          混乱邪恶: "毁灭的冲动<br>不受任何约束",
+        };
+        return {
+          name: fullName,
+          desc: desc[fullName] || "",
+          raw: { law, chaos, good, evil },
+        };
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  结果渲染
+      // ═══════════════════════════════════════════════════
+      let _speciesResult = null;
+      let _classResult = null;
+      let _deityResult = null;
+
+      function showResults() {
+        showScreen("result");
+        _speciesResult = matchSpecies();
+        _classResult = matchClass();
+        const alignment = matchAlignment();
+        _deityResult = matchDeity(alignment.name);
+        const deity = _deityResult.top[0];
+        renderSpeciesCard(_speciesResult.top, _speciesResult.playerVec);
+        renderAlternatives(_speciesResult);
+        document.getElementById("res-personality").innerHTML =
+          renderPersonality(_speciesResult.playerVec, alignment, deity);
+
+        document.getElementById("res-alignment-name").textContent =
+          alignment.name;
+        document.getElementById("res-alignment-desc").innerHTML =
+          alignment.desc;
+        renderDeityCard(deity);
+        renderClassCard(_classResult);
+        renderClassChoices(_classResult);
+        renderAlignmentGrid(alignment);
+        renderTopTags();
+        renderDeityChoices(_deityResult);
+      }
+
+      function renderDeityCard(deity) {
+        document.getElementById("res-deity-name").textContent = deity.name;
+        document.getElementById("res-deity-sub").textContent =
+          [deity.rank, deity.alignment].filter(Boolean).join(" · ") ||
+          deity.matchBy ||
+          "";
+      }
+
+      function renderAlignmentGrid(alignment) {
+        const grid = document.getElementById("res-align-grid");
+        if (!grid) return;
+
+        const labels = [
+          ["LG", "NG", "CG"],
+          ["LN", "TN", "CN"],
+          ["LE", "NE", "CE"],
+        ];
+        const cnLabels = [
+          ["守序善良", "中立善良", "混乱善良"],
+          ["守序中立", "绝对中立", "混乱中立"],
+          ["守序邪恶", "中立邪恶", "混乱邪恶"],
+        ];
+
+        // Normalize scores to x,y position (0=left/top, 1=right/bottom)
+        const law = alignment.raw.law || 0;
+        const chaos = alignment.raw.chaos || 0;
+        const good = alignment.raw.good || 0;
+        const evil = alignment.raw.evil || 0;
+        const total_lc = Math.abs(law) + Math.abs(chaos) + 1;
+        const total_ge = Math.abs(good) + Math.abs(evil) + 1;
+
+        // Map to 0-1 range: 0 = lawful/good, 1 = chaotic/evil
+        const x = (chaos + 0.5 * total_lc) / total_lc;
+        const y = (evil + 0.5 * total_ge) / total_ge;
+
+        // Clamp
+        const cx = Math.max(0, Math.min(1, x));
+        const cy = Math.max(0, Math.min(1, y));
+
+        // Cell colors: good=blue tint, evil=red tint, neutral=unchanged
+        const cellColors = [
+          [
+            "rgba(72,120,200,.15)",
+            "rgba(72,120,200,.12)",
+            "rgba(72,120,200,.15)",
+          ],
+          ["transparent", "transparent", "transparent"],
+          ["rgba(192,64,64,.15)", "rgba(192,64,64,.12)", "rgba(192,64,64,.15)"],
+        ];
+        // Dot color: good=blue, evil=red, neutral=gold
+        const geScore = good - evil;
+        const dotColor =
+          geScore > 2 ? "#4878c8" : geScore < -2 ? "#c04040" : "#c9a036";
+
+        let html = "";
+        for (let row = 0; row < 3; row++) {
+          for (let col = 0; col < 3; col++) {
+            html += `<div class="cell" title="${cnLabels[row][col]}" style="background:${cellColors[row][col]};">${labels[row][col]}</div>`;
+          }
+        }
+        const dotX = cx * 100;
+        const dotY = cy * 100;
+        html += `<div class="dot" style="left:${dotX}%;top:${dotY}%;background:${dotColor};border-color:${dotColor};box-shadow:0 0 8px ${dotColor}80;"></div>`;
+        grid.innerHTML = html;
+      }
+
+      function renderTopTags() {
+        const el = document.getElementById("res-top-tags");
+        if (!el) return;
+        // Collect all 神祇· scores from accumulator
+        const tagScores = {};
+        for (const [dim, val] of Object.entries(STATE.accumulator)) {
+          if (!dim.startsWith("神祇·")) continue;
+          tagScores[dim.substring(3)] =
+            (tagScores[dim.substring(3)] || 0) + val;
+        }
+        // Sort by score descending, take top 8
+        const sorted = Object.entries(tagScores)
+          .filter(([, v]) => v > 0)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 8);
+        if (sorted.length === 0) {
+          el.innerHTML =
+            '<span style="color:#8b6f47;font-style:italic;">无显著倾向</span>';
+          return;
+        }
+        const maxScore = sorted[0][1];
+        el.innerHTML = sorted
+          .map(([tag, score]) => {
+            const pct = Math.round((score / maxScore) * 100);
+            return `<div style="display:flex;align-items:center;gap:6px;">
+            <span style="width:40px;text-align:right;color:#8b6f47;">${tag}</span>
+            <div style="flex:1;height:6px;background:rgba(139,111,71,.15);border-radius:3px;">
+              <div style="height:100%;width:${pct}%;background:#c9a036;border-radius:3px;"></div>
+            </div>
+          </div>`;
+          })
+          .join("");
+      }
+
+      const CLASS_DESCRIPTIONS = {
+        狂战士:
+          "用怒火撕裂一切障碍——狂战士相信，最纯粹的战斗力来自于不被理性束缚的原始情感。他们在前线狂乱地挥舞武器，不穿重甲，不求退路。",
+        战士: "千锤百炼，一板一眼——战士的力量来自无数小时的重复训练和战场上瞬息万变的判断。他们是探险队中最可靠的堡垒，精通所有武器与护甲。",
+        武斗家:
+          "修心锻体，以气御敌——武斗家不用重甲重剑，他们相信身体的每一寸都可以是武器。真正的战场不是在迷宫里，而是在自己的呼吸之间。",
+        游荡者:
+          "伺机而动，一击致命——游荡者不会站在明处。他们在阴影中等待对手分心的那一瞬间，然后用精确到毫厘的攻击结束战斗。",
+        游侠: "知晓野外，追猎宿敌——游侠与自然协同作战，对特定猎物有着近乎执念的了解。每一次伏击、每一根绊索，都是事先准备好的。",
+        圣武士:
+          "以誓言为剑，以信念为盾——圣武士的力量来自他们不可动摇的神圣誓言。他们既能用重甲扛下致命一击，也能用圣光治愈同伴的伤口。",
+        奇械师:
+          "魔法与工艺的交汇——奇械师是发明家，将法术注入普通物件，创造出不普通的魔法装备。他们的智慧活在他们制造的每一件物品中。",
+        契术师:
+          "与强大存在签订契约——契术师的力量是借来的，代价是牢不可破的契约。他们游走在光明与黑暗之间，用秘密和交易换取别人无法触及的力量。",
+        术士: "魔力流淌在血液之中——术士不需要学习魔法，魔法就是他们的一部分。每一次施法都是一次自我表达，狂野、不可预测，却无比强大。",
+        吟游诗人:
+          "用旋律与话语激励世界——吟游诗人相信语言和音乐拥有重塑现实的力量。他们不是最强的战士，但当你听到他们的歌声时，你会变得比最强的战士更强。",
+        牧师: "引导神力，治愈苍生——牧师是神祇在凡间的容器，每一个治疗法术、每一次驱散不死生物，都是他们信仰的具现。他们守护生命，因为生命本身即是最高的善。",
+        法师: "知识就是力量——法师的力量不来自血脉或神灵，而来自无数个挑灯夜读的深夜。他们的法术书比任何武器都重，因为他们知道：准备万全的人永远不会输。",
+      };
+
+      function renderClassCard(klass) {
+        document.getElementById("res-class-name").textContent = klass.name;
+        document.getElementById("res-class-desc").textContent =
+          CLASS_DESCRIPTIONS[klass.name] || "";
+        document.getElementById("res-class-dims").innerHTML = renderClassBars(
+          klass.playerVec,
+          klass.clsVec,
+        );
+      }
+
+      function renderClassChoices(klass) {
+        const el = document.getElementById("res-class-choices");
+        if (!el) return;
+        const names = PMDND_DATA.classes.map((c) => c[0]);
+        el.innerHTML = names
+          .map(
+            (name) => `
+          <button onclick="swapClass('${name}')"
+            style="padding:4px 10px;font-size:11px;background:${name === klass.name ? "rgba(201,160,54,.25)" : "rgba(245,230,200,.5)"};border:1px solid ${name === klass.name ? "#c9a036" : "rgba(139,111,71,.4)"};cursor:pointer;color:#2a1a0a;font-family:inherit;border-radius:3px;font-weight:${name === klass.name ? "bold" : "normal"};"
+          >${name}</button>
+        `,
+          )
+          .join("");
+      }
+
+      function swapClass(name) {
+        const c = PMDND_DATA.classes.find((c) => c[0] === name);
+        if (!c) return;
+        const playerVec = _classResult.playerVec;
+        const clsVec = [c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9]];
+        document.getElementById("res-class-name").textContent = name;
+        document.getElementById("res-class-desc").textContent =
+          CLASS_DESCRIPTIONS[name] || "";
+        document.getElementById("res-class-dims").innerHTML = renderClassBars(
+          playerVec,
+          clsVec,
+        );
+        renderClassChoices({ name, playerVec, clsVec });
+      }
+
+      const CLASS_LABELS = [
+        "施法者",
+        "前排",
+        "强攻",
+        "潜袭",
+        "守护",
+        "支援",
+        "控场",
+        "奉献",
+        "自律",
+      ];
+      const CLASS_COLORS = [
+        "#c04040",
+        "#f08030",
+        "#78c850",
+        "#a040c0",
+        "#f0b028",
+        "#6890f0",
+        "#4878c8",
+        "#8b6f47",
+        "#c9a036",
+      ];
+
+      function renderClassBars(playerVec, clsVec) {
+        return CLASS_LABELS.map(
+          (label, i) => `
+            <div class="dim-row" style="font-size:11px;">
+              <span class="dim-label" style="width:52px;font-size:11px;">${label}</span>
+              <div class="dim-bar-wrap">
+                <div class="dim-bar-fill" style="width:${playerVec[i] * 10}%;background:${CLASS_COLORS[i]};"></div>
+                <div class="dim-bar-tick" style="left:${clsVec[i] * 10}%;"></div>
+              </div>
+              <span class="dim-val" style="font-size:10px;">${playerVec[i].toFixed(1)}</span>
+            </div>
+          `,
+        ).join("");
+      }
+
+      function renderSpeciesCard(sp, playerVec) {
+        document.getElementById("res-portrait").src =
+          `portraits/${String(sp.id).padStart(4, "0")}.png`;
+        document.getElementById("res-species-name").textContent =
+          `#${sp.id}  ${sp.name}`;
+        const st = sp.stats;
+        const pad = (v) => String(v).padStart(3, " ");
+        document.getElementById("res-species-stats").innerHTML =
+          `<span class="stat-tag hp">HP　</span>${pad(st[0])}  <span class="stat-tag spe">速度</span>${pad(st[5])}<br>` +
+          `<span class="stat-tag atk">物攻</span>${pad(st[1])}  <span class="stat-tag spa">特攻</span>${pad(st[3])}<br>` +
+          `<span class="stat-tag def">物防</span>${pad(st[2])}  <span class="stat-tag spd">特防</span>${pad(st[4])}`;
+        document.getElementById("res-dims").innerHTML = renderComparisonBars(
+          playerVec,
+          sp.pokeVec,
+        );
+      }
+
+      function renderPersonality(playerVec, alignment, deity) {
+        const dims = ["攻势", "守护", "愈心", "急速", "秘法"];
+        const levels = { 高: 7.5, 中高: 5.0, 中低: 2.5 };
+        const desc = {
+          攻势: {
+            高: "对你来说，犹豫比失败更难以忍受——当你看见一条路，哪怕它布满荆棘，你的第一反应也是先迈出脚再说。你不喜欢站在人群后面等待结果，你更愿意亲手去改变它。",
+            中高: "你并不是一个咄咄逼人的存在，但当事情发展到需要有人站出来的时候，你不会是那个坐在原地看着的人。你有分寸，但你也有锋芒。",
+            中低: "你很少是第一个出手的人。你更愿意先看清楚局面的全貌——不是因为怯懦，而是因为你相信大部分冲突其实可以在动手之前被消解。",
+            低: "对你而言，和平不是手段，是目的本身。你天生抵触那种把世界分成「赢家」和「输家」的叙事，你更愿意成为那个在所有人拔剑之前把话说完的人。",
+          },
+          守护: {
+            高: "你的可靠不是写在脸上的——它藏在那些别人没有注意到的地方：你提前检查过的装备、你最后确认的路线、你在所有人都睡了之后轻轻掖好的毯子。你不需要被人感谢，你只需要所有人都安全。",
+            中高: "当风暴来临时，你不会第一个冲出去——但你会站在所有人的斜后方，确保没有一个人被落下。你的保护欲不是出于责任感，而是出于一种更深的东西：你觉得有些人的安全比你自己的更重要。",
+            中低: "你相信最好的防御不是站成一面墙，而是永远待在对的地方。你不会替别人挡下每一击，但你会提醒他们注意脚下、记住风向、别在半夜走向自己没有勘察过的岔路。",
+            低: "你从来不是那个能挡在前面的人——你的身体太轻，你的重心太高，你的骨骼不是为承受冲击而设计的。但你学会了用距离换取安全，用敏锐弥补脆弱，用自己的节奏在危险边缘保持平衡。",
+          },
+          愈心: {
+            高: "你身上有一种让人不自觉放下戒备的柔和。你可以坐在一个完全陌生的人身边，不说一句话，却能让他觉得被听见了。治愈对你来说不是一种技能，而是一种本能——就像植物朝光的方向生长。",
+            中高: "你是那种会在队友受伤之前就注意到他状态不对的人。你不需要等他开口求助——你已经在翻背包里那卷没用完的绷带了。你相信照顾好彼此不是任务的一部分，而是队伍之所以是队伍的全部理由。",
+            中低: "你不习惯把关心放在明面上。比起直白的安慰，你更愿意帮对方把实际问题先解决掉——你觉得一个人如果不再害怕明天吃什么，心里的伤也会好得更快一些。",
+            低: "你不擅长安慰别人。当有人在你面前崩溃的时候，你的第一反应是找问题、列方案、把能做的事情一件一件做完。你知道这有时候看起来很冷——但你只是在用你知道的唯一方式表达在乎。",
+          },
+          急速: {
+            高: "你的神经像是永远绷在一根即将发射的弦上——不是紧张，而是随时准备好。你喜欢风从耳边掠过的声音，喜欢在别人还没反应过来的时候就已经站在下一个路口了。等待对你来说不是耐心，是浪费。",
+            中高: "你有自己的节奏——它比大多数人快半拍。你喜欢新鲜感，乐于接受突如其来的改变，总能在计划被打乱之后第一个找到新的方向。",
+            中低: "你不会为了快而快。你觉得大多数时候，「慢下来」并不是拖延，而是给自己留出足够的时间去判断什么才是真正值得为之奔跑的东西。",
+            低: "你从不被世界的急迫所动摇。你按照自己的步调走路，不紧不慢——不是因为迟钝，而是因为你知道有些东西只有在停下来的时候才能被看见。",
+          },
+          秘法: {
+            高: "你的眼睛总是在看别人看不到的东西——一扇窗的倒影、一朵云的形状、一行被磨得模糊的刻字。对你来说，世界不只是由物质构成的，它还有一层由符号、能量和隐喻编织而成的内衬。",
+            中高: "你比大多数人多了一层感知——你在意事物背后的成因，喜欢把零散的线索拼成一幅完整的图案。别人看到结果的时候，你已经在回溯过程了。",
+            中低: "你更信任自己的双手。对你来说，「理解」不是想出来的——是做出来的。你不喜欢空谈理论，你觉得一把用熟了的工具比一万句精妙的推演更能说明问题。",
+            低: "你对玄奥的事物保持着一种健康的距离。你不否认它们的存在，但你很清醒地知道：如果一件事不能被看见、不能被触摸、不能在实际中起效，那它就不能成为你做决定的依据。",
+          },
+        };
+
+        return (
+          dims
+            .map((d, i) => {
+              const v = playerVec[i];
+              const level =
+                v >= 7.5 ? "高" : v >= 5.0 ? "中高" : v >= 2.5 ? "中低" : "低";
+              return desc[d][level];
+            })
+            .join("") +
+          renderAlignmentText(alignment) +
+          renderDeityText(deity)
+        );
+      }
+
+      function renderAlignmentText(alignment) {
+        const texts = {
+          守序善良:
+            "在是与非之间，你总是选择那条更正直的路——不是因为规则告诉你要这样做，而是因为你相信善良本身就应该有形状、有边界、有可以被信赖的尺度。",
+          中立善良:
+            "你不觉得做好事需要什么特别的理由。你帮助别人，仅仅因为那一刻你的心告诉你应该这么做——不需要律法的许可，也不需要旗帜的号召。",
+          混乱善良:
+            "你相信自由比什么都重要，但你从未让自由成为伤害别人的借口。你愿意打破不公正的规则，但你的手永远不会碰那些无辜的人。",
+          守序中立:
+            "对你来说，秩序本身就是价值。你不一定热爱每一条规则，但你相信没有规则的世界比有规则但需要修补的世界要危险得多。",
+          绝对中立:
+            "你不轻易站队——不是因为冷漠，而是因为你相信世间万物都有自己的平衡点。你在风浪中保持自己的重心，不随波逐流，也不逆流而行。",
+          混乱中立:
+            "你是自由的，而且你对此毫不妥协。你不喜欢被任何东西束缚——不是出于叛逆，而是因为你觉得生命本就应该是流动的、不确定的、属于你自己的。",
+          守序邪恶:
+            "你精于利用体系，善于在规则中找到对自己最有利的路径。你不是那种随随便便作恶的人——你的每一步都有条不紊，每一笔账都算得清清楚楚。",
+          中立邪恶:
+            "你把自己放在第一位。这不是什么需要辩护的事情——对你来说，世界就是这样的。每个人都在为自己打算，你只是比大多数人更坦诚而已。",
+          混乱邪恶:
+            "你内心有一团不受约束的火——它不一定总是燃烧，但当它燃起来的时候，你不在乎边界、不在乎后果、不在乎谁会被烧到。你只在乎那一刻的感受。",
+        };
+        return "<br><br>" + (texts[alignment.name] || "");
+      }
+
+      function renderDeityChoices(result) {
+        const el = document.getElementById("res-deity-choices");
+        if (!el) return;
+        el.innerHTML = result.top
+          .map(
+            (d, i) => `
+          <button onclick="swapDeity(${i})"
+            style="padding:4px 8px;font-size:11px;background:${i === 0 ? "rgba(201,160,54,.25)" : "rgba(245,230,200,.5)"};border:1px solid ${i === 0 ? "#c9a036" : "rgba(139,111,71,.4)"};cursor:pointer;color:#2a1a0a;font-family:inherit;border-radius:3px;font-weight:${i === 0 ? "bold" : "normal"};"
+          >${d.name}</button>
+        `,
+          )
+          .join("");
+      }
+
+      function swapDeity(idx) {
+        if (!_deityResult) return;
+        const d = _deityResult.top[idx];
+        if (!d) return;
+        renderDeityCard(d);
+        renderTopTags();
+        renderDeityChoices(_deityResult);
+      }
+
+      function renderDeityText(deity) {
+        const texts = {
+          理念信仰:
+            "你不需要一位具体的凝视者——你信的不是某个名字，而是一种方向。这种信念比任何祈祷都更安静，却比任何誓言都更坚定。",
+          阿尔宙斯:
+            "你被那种超越善恶、超越时间的存在深深吸引——不是崇拜，而是一种面对宇宙本源的沉默的敬意。",
+          莱希拉姆:
+            "真实是你不可动摇的基石。你宁愿面对一个令人痛苦的真相，也不愿活在温暖的谎言之中。",
+          捷克罗姆:
+            "你追随的是地平线之外的东西——那个还不存在的、但值得为之奋斗的未来。你的力量来自于你还没有放弃的梦想。",
+          酋雷姆:
+            "你相信极端的对立之间一定有一条看不见的线——而你的天赋，就是在所有人的立场各不相让的时候，找到那根线并轻轻一拉。",
+          由克希:
+            "智慧是你最珍视的天赋。你相信世界是可以被理解的，而理解本身就是一种最深的善意。",
+          艾姆利多:
+            "你不害怕感受——你觉得悲伤和喜悦一样重要，愤怒和温柔一样真实。你在情感中找到了连接世界的方式。",
+          亚克诺姆:
+            "你说到做到。意志是你最坚硬的骨头——无论面对多少质疑与困苦，你从未松开过自己的方向。",
+          梦幻: "你身上有一种无法被定义的好奇心——你觉得世界是一个没讲完的故事，而你想用自己的经历把它继续写下去。",
+          凤王: "你相信破碎的东西可以被修复，绝望的尽头依然有光。你在灰烬中寻找火种——不是因为你天真，而是因为你亲眼见过重生。",
+          哲尔尼亚斯:
+            "生命本身是你信仰的底线。你觉得每一个活着的瞬间、每一次呼吸、每一株在石缝里发芽的植物，都不可替代。",
+          伊裴尔塔尔:
+            "你不惧怕终结——你知道所有的旅程都有终点，所有的故事都有最后一页。你以平静的目光看着那些别人不敢直视的东西。",
+          基格尔德:
+            "你看到的不是一棵树或一条河——你看到的是它们之间的联结。你相信每一个部分都属于一个更大的整体，而你只是其中的一部分。",
+          克雷色利亚:
+            "在最黑的夜里，你是那个还记得月亮的人。你的存在本身就是一种希望——不是大声的宣言，而是安静的陪伴。",
+          比克提尼:
+            "你相信胜利是可能的——哪怕对面站着整个世界的质疑。你的火焰不是愤怒，是一种对自己和别人都不曾熄灭的信念。",
+          索尔迦雷欧:
+            "你在秩序中找到意义，在光明中找到方向。你相信太阳会照常升起——不是因为它必须如此，而是因为你愿意为它守护。",
+          露奈雅拉:
+            "你拥抱变化——月的阴晴圆缺对你来说不是无常，而是一种温柔的提醒：一切都有阶段，黑暗之后总是月光。",
+          苍响与藏玛然特:
+            "你是那种会在最后一刻仍然站在最前面的人。你的信仰不是刻在石碑上的誓言——而是你每一次选择留下来的瞬间。",
+          蕾冠王:
+            "你理解「耕种」的意义——不是惊天动地的壮举，而是日复一日地播种、等待、收获，然后把这些果实分给需要的人。",
+          帝牙卢卡:
+            "时间是你看待一切的方式。你知道每一个现在都是无数过去的总和，每一个选择都会在遥远的未来激起涟漪。你不着急——因为你明白，真正重要的东西从不惧怕等待。",
+          帕路奇亚:
+            "你感受得到此与彼之间的张力——空间对你来说不是距离，而是可以被理解、被尊重、被跨越的结构。你相信万事万物都在一个更大的框架中有自己的位置。",
+          洛奇亚:
+            "你习惯站在风暴的中心——在那里，最狂野的力量拥有最宁静的瞳孔。你不轻易现身，但当你出现的时候，所有人都知道你来了。庇护是你的本能，而非责任。",
+          固拉多:
+            "你相信力量本身即是一种语言——最简单、最直接、最不可抗拒。你不是在破坏，你是在塑造。山脉在你脚下隆起，大地在你手中呼吸。",
+          盖欧卡:
+            "你属于海洋——不是那种温柔的浪花，而是孕育生命又吞噬一切的始源之海。你觉得毁灭与创造本是一回事，每一次淹没都是一次重新开始的机会。",
+          烈空坐:
+            "你俯瞰着整个星球——陆地与海洋的纷争在你眼中只是需要调停的失衡。你不属于任何一方，你只属于天空本身。你的责任不是统治，是守望。",
+          雷吉奇卡斯:
+            "你在一万年里只做一件事——拉着大陆板块，以肉眼不可见的速度移过地幔。你不着急，因为你相信最高的力量总是最慢的。根基，从来不是一天建成的。",
+          基拉祈:
+            "你是那个会对着流星许愿的人——但你很清楚，每一个愿望都有它的代价。你不回避代价，你只是觉得有些东西值得你付出。",
+          骑拉帝纳:
+            "你不害怕黑暗——或者说，你已经学会了与它共存。你知道在世界的另一面，存在着同样真实、同样庞大的东西。你是那个敢于直视镜中人的人。",
+          达克莱伊:
+            "你不认为恐惧一定是坏事。有时候，只有在最深的噩梦里，你才能真正看清楚自己在躲避什么。你不是散播恐惧——你是用它来锻造每一个面对它的人。",
+          美洛耶塔:
+            "你相信一首歌能穿越时间的壁垒——在被遗忘之前，旋律是最后的信使。你活在声音之中，用共鸣连接每一个曾经存在和将要存在的灵魂。",
+          奈克洛兹玛:
+            "你体会过饥饿——不是身体的，而是灵魂层面的。那种对光的渴望，那种想要被完整填满的冲动，让你理解了世界阴面里最深的孤独。",
+          无极汰那:
+            "你身上有一种无法被驯服的能量——它不属于任何体系，不遵从任何规则。你知道自己的存在本身就是一场风暴，而风暴并不需要道歉。",
+        };
+        const name = deity.name;
+        if (texts[name]) return "<br><br>" + texts[name];
+        if (name !== "理念信仰")
+          return "<br><br>你感受到一种来自遥远存在的影响——它还不肯说出名字，但你已经能感觉到它的视线落在了你的后背上。";
+        return "";
+      }
+
+      function renderAlternatives(result) {
+        const el = document.getElementById("res-alternatives");
+        if (!el) return;
+        el.innerHTML = result.alternatives
+          .map(
+            (s, i) => `
+          <button class="alt-species-btn" onclick="swapSpecies(${i})"
+            style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:${i === 0 ? "rgba(201,160,54,.25)" : "rgba(245,230,200,.5)"};border:1px solid ${i === 0 ? "#c9a036" : "rgba(139,111,71,.4)"};cursor:pointer;font-size:12px;color:#2a1a0a;text-align:left;font-family:inherit;border-radius:3px;">
+            <img src="portraits/${String(s.id).padStart(4, "0")}.png"
+              style="width:40px;height:40px;min-width:40px;min-height:40px;image-rendering:pixelated;border-radius:2px;background:#faf6f0;">
+            <span style="font-weight:${i === 0 ? "bold" : "normal"}">#${s.id} ${s.name}</span>
+          </button>
+        `,
+          )
+          .join("");
+      }
+
+      function swapSpecies(idx) {
+        if (!_speciesResult) return;
+        const sp = _speciesResult.alternatives[idx];
+        renderSpeciesCard(sp, _speciesResult.playerVec);
+        // 滚动到顶部
+        document
+          .getElementById("screen-result")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // ═══════════════════════════════════════════════════
+      //  入口
+      // ═══════════════════════════════════════════════════
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("btn-start")
+          .addEventListener("click", startQuiz);
+        document.getElementById("btn-restart").addEventListener("click", () => {
+          STATE.answers = [];
+          STATE.accumulator = {};
+          STATE.questionIndex = 0;
+          showScreen("welcome");
+        });
+      });
+    </script>
+  </body>
+</html>
