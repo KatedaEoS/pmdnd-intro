@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PMDnD 性格测试</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Noto+Serif+SC:wght@400;700&display=swap"
+      href="https://fonts.loli.net/css2?family=MedievalSharp&family=Noto+Serif+SC:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -79,18 +79,78 @@
           </ul>
         </div>
 
-        <div id="welcome-buttons" style="display:flex;flex-direction:column;gap:12px;align-items:center;">
-          <button id="btn-resume" class="btn-start" style="display:none;background:linear-gradient(180deg,#2a6a18 0%,#1a5a08 50%,#0a3a00 100%);">继续回答</button>
-          <button id="btn-view-result" class="btn-start" style="display:none;background:linear-gradient(180deg,#2a6a18 0%,#1a5a08 50%,#0a3a00 100%);">查看上次结果</button>
-          <button id="btn-start" class="btn-start">START YOUR NEW JOURNEY</button>
+        <div
+          id="welcome-buttons"
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+          "
+        >
+          <button
+            id="btn-resume"
+            class="btn-start"
+            style="
+              display: none;
+              background: linear-gradient(
+                180deg,
+                #2a6a18 0%,
+                #1a5a08 50%,
+                #0a3a00 100%
+              );
+            "
+          >
+            继续回答
+          </button>
+          <button
+            id="btn-view-result"
+            class="btn-start"
+            style="
+              display: none;
+              background: linear-gradient(
+                180deg,
+                #2a6a18 0%,
+                #1a5a08 50%,
+                #0a3a00 100%
+              );
+            "
+          >
+            查看上次结果
+          </button>
+          <button id="btn-start" class="btn-start">
+            START YOUR NEW JOURNEY
+          </button>
         </div>
 
-        <p style="font-size: 11px; color: #8b6f47; text-align: center; line-height: 1.8; margin-top: 24px; max-width: 480px;">
+        <p
+          style="
+            font-size: 11px;
+            color: #8b6f47;
+            text-align: center;
+            line-height: 1.8;
+            margin-top: 24px;
+            max-width: 480px;
+          "
+        >
           本测试基于 PMDnD（Pokémon Mystery Dungeons &amp; Dragons）世界观。<br />
-          宝可梦种族值按 PMDnD 规则标准化，蛇类宝可梦身高折半，身高低于 0.9m 者已按规则调整。<br />
-          精灵图资源来自 <a href="https://sprites.pmdcollab.org/" style="color:#c9a036;">PMDCollab/SpriteCollab</a>（CC BY-NC 4.0）。<br />
-          PMDnD © 2026 <a href="https://space.bilibili.com/12212409" style="color:#c9a036;">空探的凯特</a>。<br />
-          本测试项目以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" style="color:#c9a036;">CC BY-NC-SA 4.0</a> 协议发布。
+          宝可梦种族值按 PMDnD 规则标准化，蛇类宝可梦身高折半，身高低于 0.9m
+          者已按规则调整。<br />
+          精灵图资源来自
+          <a href="https://sprites.pmdcollab.org/" style="color: #c9a036"
+            >PMDCollab/SpriteCollab</a
+          >（CC BY-NC 4.0）。<br />
+          PMDnD © 2026
+          <a href="https://space.bilibili.com/12212409" style="color: #c9a036"
+            >空探的凯特</a
+          >。<br />
+          本测试项目以
+          <a
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
+            style="color: #c9a036"
+            >CC BY-NC-SA 4.0</a
+          >
+          协议发布。
         </p>
       </div>
     </section>
@@ -185,6 +245,7 @@
       </h2>
 
       <div
+        id="char-sheet"
         class="char-sheet sheet-wrap"
         style="border-radius: 4px; overflow: hidden"
       >
@@ -202,14 +263,8 @@
               class="pixel-portrait species-portrait"
             />
             <div class="species-info">
-              <div
-                id="res-species-name"
-                class="species-name"
-              ></div>
-              <div
-                id="res-species-stats"
-                class="species-stats"
-              ></div>
+              <div id="res-species-name" class="species-name"></div>
+              <div id="res-species-stats" class="species-stats"></div>
             </div>
           </div>
           <!-- 右：阵营 -->
@@ -451,9 +506,17 @@
         ></div>
       </div>
 
-      <button id="btn-restart" class="btn-outline" style="margin-top: 24px">
-        返回首页
-      </button>
+      <div
+        style="
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          margin-top: 24px;
+          flex-wrap: wrap;
+        "
+      >
+        <button id="btn-restart" class="btn-outline">返回首页</button>
+      </div>
 
       <div class="content-wrap" style="margin-top: 32px; padding-bottom: 32px">
         <p
@@ -465,11 +528,25 @@
           "
         >
           本测试基于 PMDnD（Pokémon Mystery Dungeons &amp; Dragons）世界观。<br />
-          宝可梦种族值按 PMDnD 规则标准化（各项缩放到总和 600），蛇类宝可梦身高折半，<br />
-          身高低于 0.9m 者已按规则调整。部分宝可梦被排除（神祇、悖谬宝可梦等）。<br />
-          精灵图资源来自 <a href="https://sprites.pmdcollab.org/" style="color:#c9a036;">PMDCollab/SpriteCollab</a>（CC BY-NC 4.0）。<br />
-          PMDnD © 2026 <a href="https://space.bilibili.com/12212409" style="color:#c9a036;">空探的凯特</a>。<br />
-          本测试项目以 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" style="color:#c9a036;">CC BY-NC-SA 4.0</a> 协议发布。
+          宝可梦种族值按 PMDnD 规则标准化（各项缩放到总和
+          600），蛇类宝可梦身高折半，<br />
+          身高低于 0.9m
+          者已按规则调整。部分宝可梦被排除（神祇、悖谬宝可梦等）。<br />
+          精灵图资源来自
+          <a href="https://sprites.pmdcollab.org/" style="color: #c9a036"
+            >PMDCollab/SpriteCollab</a
+          >（CC BY-NC 4.0）。<br />
+          PMDnD © 2026
+          <a href="https://space.bilibili.com/12212409" style="color: #c9a036"
+            >空探的凯特</a
+          >。<br />
+          本测试项目以
+          <a
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
+            style="color: #c9a036"
+            >CC BY-NC-SA 4.0</a
+          >
+          协议发布。
         </p>
       </div>
     </section>
@@ -512,16 +589,23 @@
           sizePref: STATE.sizePref,
           complete: isComplete || false,
         };
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-        catch { /* storage full or unavailable */ }
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch {
+          /* storage full or unavailable */
+        }
       }
       function loadState() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
-        catch { return null; }
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY));
+        } catch {
+          return null;
+        }
       }
       function clearState() {
-        try { localStorage.removeItem(STORAGE_KEY); }
-        catch { }
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch {}
       }
 
       // ── 答题时间权重: 纠结越久得分越低 ──
@@ -776,39 +860,39 @@
       //  神祇匹配
       // ═══════════════════════════════════════════════════
       const DEITY_MAX = {
-  "亚克诺姆": 24,
-  "伊裴尔塔尔": 16,
-  "克雷色利亚": 25,
-  "凤王": 34,
-  "哲尔尼亚斯": 31,
-  "固拉多": 4,
-  "基拉祈": 8,
-  "基格尔德": 20,
-  "奈克洛兹玛": 3,
-  "帕路奇亚": 10,
-  "帝牙卢卡": 15,
-  "捷克罗姆": 36,
-  "无极汰那": 3,
-  "梦幻": 18,
-  "比克提尼": 39,
-  "洛奇亚": 6,
-  "烈空坐": 43,
-  "理念信仰": 3,
-  "由克希": 70,
-  "盖欧卡": 6,
-  "索尔迦雷欧": 29,
-  "美洛耶塔": 57,
-  "艾姆利多": 41,
-  "苍响与藏玛然特": 56,
-  "莱希拉姆": 32,
-  "蕾冠王": 41,
-  "达克莱伊": 15,
-  "酋雷姆": 33,
-  "阿尔宙斯": 23,
-  "雷吉奇卡斯": 7,
-  "露奈雅拉": 10,
-  "骑拉帝纳": 21
-};
+        亚克诺姆: 24,
+        伊裴尔塔尔: 16,
+        克雷色利亚: 25,
+        凤王: 34,
+        哲尔尼亚斯: 31,
+        固拉多: 4,
+        基拉祈: 8,
+        基格尔德: 20,
+        奈克洛兹玛: 3,
+        帕路奇亚: 10,
+        帝牙卢卡: 15,
+        捷克罗姆: 36,
+        无极汰那: 3,
+        梦幻: 18,
+        比克提尼: 39,
+        洛奇亚: 6,
+        烈空坐: 43,
+        理念信仰: 3,
+        由克希: 70,
+        盖欧卡: 6,
+        索尔迦雷欧: 29,
+        美洛耶塔: 57,
+        艾姆利多: 41,
+        苍响与藏玛然特: 56,
+        莱希拉姆: 32,
+        蕾冠王: 41,
+        达克莱伊: 15,
+        酋雷姆: 33,
+        阿尔宙斯: 23,
+        雷吉奇卡斯: 7,
+        露奈雅拉: 10,
+        骑拉帝纳: 21,
+      };
 
       function matchDeity(alignmentName) {
         const compat = compatibleDeities(alignmentName);
@@ -1024,11 +1108,16 @@
         const alignGE = geScore > 10 ? "善良" : geScore < -10 ? "邪恶" : "中立";
 
         const cellColors = [
-          ["rgba(72,120,200,.15)", "rgba(72,120,200,.12)", "rgba(72,120,200,.15)"],
+          [
+            "rgba(72,120,200,.15)",
+            "rgba(72,120,200,.12)",
+            "rgba(72,120,200,.15)",
+          ],
           ["transparent", "transparent", "transparent"],
           ["rgba(192,64,64,.15)", "rgba(192,64,64,.12)", "rgba(192,64,64,.15)"],
         ];
-        const dotColor = geScore > 10 ? "#4878c8" : geScore < -10 ? "#c04040" : "#c9a036";
+        const dotColor =
+          geScore > 10 ? "#4878c8" : geScore < -10 ? "#c04040" : "#c9a036";
 
         let html = "";
         for (let row = 0; row < 3; row++) {
@@ -1182,8 +1271,8 @@
         const st = sp.stats;
         const pad = (v) => String(v).padStart(3, " ");
         document.getElementById("res-species-stats").innerHTML =
-          `<span class="stat-tag hp">HP　</span>${pad(st[0])}  <span class="stat-tag atk">物攻</span>${pad(st[1])}  <span class="stat-tag spa">特攻</span>${pad(st[3])}  ` +
-          `<span class="stat-tag def">物防</span>${pad(st[2])}  <span class="stat-tag spd">特防</span>${pad(st[4])}  <span class="stat-tag spe">速度</span>${pad(st[5])}`;
+          `<span class="stat-tag hp">HP　</span>${pad(st[0])}  <span class="stat-tag atk">物攻</span>${pad(st[1])}  <span class="stat-tag def">物防</span>${pad(st[2])}  ` +
+          `<span class="stat-tag spa">特攻</span>${pad(st[3])}  <span class="stat-tag spd">特防</span>${pad(st[4])}  <span class="stat-tag spe">速度</span>${pad(st[5])}`;
         document.getElementById("res-dims").innerHTML = renderComparisonBars(
           playerVec,
           sp.pokeVec,
@@ -1390,9 +1479,15 @@
       }
 
       // ═══════════════════════════════════════════════════
-      //  入口
       // ═══════════════════════════════════════════════════
-      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("btn-restart").addEventListener("click", () => {
+          STATE.answers = [];
+          STATE.accumulator = {};
+          STATE.questionIndex = 0;
+          showScreen("welcome");
+        });
+
+document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("btn-start").addEventListener("click", startQuiz);
         document.getElementById("btn-restart").addEventListener("click", () => {
           STATE.answers = []; STATE.accumulator = {}; STATE.questionIndex = 0;
@@ -1417,7 +1512,11 @@
               STATE.sizePref = saved.sizePref;
               showResults();
             });
-          } else if (!saved.complete && saved.answers && saved.answers.length > 0) {
+          } else if (
+            !saved.complete &&
+            saved.answers &&
+            saved.answers.length > 0
+          ) {
             btnResume.style.display = "inline-block";
             btnResume.addEventListener("click", () => {
               STATE.sizePref = saved.sizePref;
