@@ -79,7 +79,11 @@
           </ul>
         </div>
 
-        <button id="btn-start" class="btn-start">BEGIN YOUR JOURNEY</button>
+        <div id="welcome-buttons" style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+          <button id="btn-resume" class="btn-start" style="display:none;background:linear-gradient(180deg,#2a6a18 0%,#1a5a08 50%,#0a3a00 100%);">继续回答</button>
+          <button id="btn-view-result" class="btn-start" style="display:none;background:linear-gradient(180deg,#2a6a18 0%,#1a5a08 50%,#0a3a00 100%);">查看上次结果</button>
+          <button id="btn-start" class="btn-start">START YOUR NEW JOURNEY</button>
+        </div>
 
         <p style="font-size: 11px; color: #8b6f47; text-align: center; line-height: 1.8; margin-top: 24px; max-width: 480px;">
           本测试基于 PMDnD（Pokémon Mystery Dungeons &amp; Dragons）世界观。<br />
@@ -190,36 +194,21 @@
         <!-- 上半区：种族 + 阵营 -->
         <div class="grid-2">
           <!-- 左：头像 + 名字 + 种族值 -->
-          <div
-            class="cell"
-            style="display: flex; gap: 16px; align-items: center"
-          >
+          <div class="cell species-cell">
             <img
               id="res-portrait"
               src=""
               alt=""
-              class="pixel-portrait"
-              style="
-                width: 88px;
-                height: 88px;
-                border: 2px solid #8b6f47;
-                border-radius: 4px;
-                flex-shrink: 0;
-              "
+              class="pixel-portrait species-portrait"
             />
-            <div>
+            <div class="species-info">
               <div
                 id="res-species-name"
-                style="font-size: 22px; font-weight: bold; color: #3a1f0d"
+                class="species-name"
               ></div>
               <div
                 id="res-species-stats"
-                style="
-                  font-size: 12px;
-                  color: #5c3d2e;
-                  margin-top: 6px;
-                  line-height: 1.8;
-                "
+                class="species-stats"
               ></div>
             </div>
           </div>
@@ -463,7 +452,7 @@
       </div>
 
       <button id="btn-restart" class="btn-outline" style="margin-top: 24px">
-        重新测试
+        返回首页
       </button>
 
       <div class="content-wrap" style="margin-top: 32px; padding-bottom: 32px">
@@ -513,9 +502,32 @@
         accumulator: {},
       };
 
+      // ── localStorage 存储 ──
+      const STORAGE_KEY = "pmdnd_save";
+      function saveState(isComplete) {
+        const data = {
+          questionIndex: STATE.questionIndex,
+          answers: STATE.answers,
+          accumulator: STATE.accumulator,
+          sizePref: STATE.sizePref,
+          complete: isComplete || false,
+        };
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+        catch { /* storage full or unavailable */ }
+      }
+      function loadState() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+        catch { return null; }
+      }
+      function clearState() {
+        try { localStorage.removeItem(STORAGE_KEY); }
+        catch { }
+      }
+
       // ── 答题时间权重: 纠结越久得分越低 ──
       function timeWeight(seconds) {
-        return Math.max(0.4, Math.min(1.0, 1.0 - (seconds - 30) * 0.05));
+        // 1 分钟内不扣，1-3 分钟线性降到 0.4 倍
+        return Math.max(0.4, Math.min(1.0, 1.0 - (seconds - 60) * 0.005));
       }
 
       function showScreen(name) {
@@ -527,9 +539,18 @@
       }
 
       function startQuiz() {
+        clearState();
         STATE.questionIndex = 0;
         STATE.answers = [];
         STATE.accumulator = {};
+        showScreen("quiz");
+        renderQuestion();
+      }
+
+      function resumeQuiz(questionIndex, answers, accumulator) {
+        STATE.questionIndex = questionIndex;
+        STATE.answers = answers || [];
+        STATE.accumulator = accumulator || {};
         showScreen("quiz");
         renderQuestion();
       }
@@ -588,6 +609,7 @@
           STATE.sizePref = q.options[optionIndex].sizePref;
         if (STATE.questionIndex < TOTAL_QUESTIONS - 1) {
           STATE.questionIndex++;
+          saveState(false);
           renderQuestion();
         } else {
           showResults();
@@ -601,6 +623,7 @@
           STATE.accumulator[dim] -= val * (last.weight || 1);
         }
         STATE.questionIndex--;
+        saveState(false);
         renderQuestion();
       }
 
@@ -725,7 +748,7 @@
           bestDist = Infinity;
         for (const c of PMDND_DATA.classes) {
           const clsVec = [c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9]];
-          const d = manhattan(player, clsVec);
+          const d = euclidean(player, clsVec);
           if (d < bestDist) {
             bestDist = d;
             best = c;
@@ -906,10 +929,10 @@
         const evil = STATE.accumulator["阵营·邪恶"] || 0;
 
         const lcScore = law - chaos;
-        const lcAxis = lcScore > 1 ? "守序" : lcScore < -1 ? "混乱" : "中立";
+        const lcAxis = lcScore > 10 ? "守序" : lcScore < -10 ? "混乱" : "中立";
 
         const geScore = good - evil;
-        const geAxis = geScore > 0 ? "善良" : geScore < 0 ? "邪恶" : "中立";
+        const geAxis = geScore > 10 ? "善良" : geScore < -10 ? "邪恶" : "中立";
 
         const fullName = `${lcAxis}${geAxis}`.replace("中立中立", "绝对中立");
         const desc = {
@@ -936,27 +959,29 @@
       let _speciesResult = null;
       let _classResult = null;
       let _deityResult = null;
+      let _alignmentResult = null;
 
       function showResults() {
+        saveState(true);
         showScreen("result");
         _speciesResult = matchSpecies();
         _classResult = matchClass();
-        const alignment = matchAlignment();
-        _deityResult = matchDeity(alignment.name);
+        _alignmentResult = matchAlignment();
+        _deityResult = matchDeity(_alignmentResult.name);
         const deity = _deityResult.top[0];
         renderSpeciesCard(_speciesResult.top, _speciesResult.playerVec);
         renderAlternatives(_speciesResult);
         document.getElementById("res-personality").innerHTML =
-          renderPersonality(_speciesResult.playerVec, alignment, deity);
+          renderPersonality(_speciesResult.playerVec, _alignmentResult, deity);
 
         document.getElementById("res-alignment-name").textContent =
-          alignment.name;
+          _alignmentResult.name;
         document.getElementById("res-alignment-desc").innerHTML =
-          alignment.desc;
+          _alignmentResult.desc;
         renderDeityCard(deity);
         renderClassCard(_classResult);
         renderClassChoices(_classResult);
-        renderAlignmentGrid(alignment);
+        renderAlignmentGrid(_alignmentResult);
         renderTopTags();
         renderDeityChoices(_deityResult);
       }
@@ -984,36 +1009,26 @@
           ["守序邪恶", "中立邪恶", "混乱邪恶"],
         ];
 
-        // Normalize scores to x,y position (0=left/top, 1=right/bottom)
-        const law = alignment.raw.law || 0;
-        const chaos = alignment.raw.chaos || 0;
-        const good = alignment.raw.good || 0;
-        const evil = alignment.raw.evil || 0;
-        const total_lc = Math.abs(law) + Math.abs(chaos) + 1;
-        const total_ge = Math.abs(good) + Math.abs(evil) + 1;
+        // 九宫格边界：±30 对应左右/上下边缘，0 对应正中
+        const EDGE = 30;
+        const lcScore = (alignment.raw.law || 0) - (alignment.raw.chaos || 0);
+        const geScore = (alignment.raw.good || 0) - (alignment.raw.evil || 0);
 
-        // Map to 0-1 range: 0 = lawful/good, 1 = chaotic/evil
-        const x = (chaos + 0.5 * total_lc) / total_lc;
-        const y = (evil + 0.5 * total_ge) / total_ge;
+        // x: 守序+30→0, 0→0.5, 混乱+30→1
+        const cx = Math.max(0, Math.min(1, 0.5 - lcScore / (EDGE * 2)));
+        // y: 善良+30→0, 0→0.5, 邪恶+30→1
+        const cy = Math.max(0, Math.min(1, 0.5 - geScore / (EDGE * 2)));
 
-        // Clamp
-        const cx = Math.max(0, Math.min(1, x));
-        const cy = Math.max(0, Math.min(1, y));
+        // 确认阵营标签匹配：±10 阈值
+        const alignLC = lcScore > 10 ? "守序" : lcScore < -10 ? "混乱" : "中立";
+        const alignGE = geScore > 10 ? "善良" : geScore < -10 ? "邪恶" : "中立";
 
-        // Cell colors: good=blue tint, evil=red tint, neutral=unchanged
         const cellColors = [
-          [
-            "rgba(72,120,200,.15)",
-            "rgba(72,120,200,.12)",
-            "rgba(72,120,200,.15)",
-          ],
+          ["rgba(72,120,200,.15)", "rgba(72,120,200,.12)", "rgba(72,120,200,.15)"],
           ["transparent", "transparent", "transparent"],
           ["rgba(192,64,64,.15)", "rgba(192,64,64,.12)", "rgba(192,64,64,.15)"],
         ];
-        // Dot color: good=blue, evil=red, neutral=gold
-        const geScore = good - evil;
-        const dotColor =
-          geScore > 2 ? "#4878c8" : geScore < -2 ? "#c04040" : "#c9a036";
+        const dotColor = geScore > 10 ? "#4878c8" : geScore < -10 ? "#c04040" : "#c9a036";
 
         let html = "";
         for (let row = 0; row < 3; row++) {
@@ -1021,9 +1036,7 @@
             html += `<div class="cell" title="${cnLabels[row][col]}" style="background:${cellColors[row][col]};">${labels[row][col]}</div>`;
           }
         }
-        const dotX = cx * 100;
-        const dotY = cy * 100;
-        html += `<div class="dot" style="left:${dotX}%;top:${dotY}%;background:${dotColor};border-color:${dotColor};box-shadow:0 0 8px ${dotColor}80;"></div>`;
+        html += `<div class="dot" style="left:${cx * 100}%;top:${cy * 100}%;background:${dotColor};border-color:${dotColor};box-shadow:0 0 8px ${dotColor}80;"></div>`;
         grid.innerHTML = html;
       }
 
@@ -1169,9 +1182,8 @@
         const st = sp.stats;
         const pad = (v) => String(v).padStart(3, " ");
         document.getElementById("res-species-stats").innerHTML =
-          `<span class="stat-tag hp">HP　</span>${pad(st[0])}  <span class="stat-tag spe">速度</span>${pad(st[5])}<br>` +
-          `<span class="stat-tag atk">物攻</span>${pad(st[1])}  <span class="stat-tag spa">特攻</span>${pad(st[3])}<br>` +
-          `<span class="stat-tag def">物防</span>${pad(st[2])}  <span class="stat-tag spd">特防</span>${pad(st[4])}`;
+          `<span class="stat-tag hp">HP　</span>${pad(st[0])}  <span class="stat-tag atk">物攻</span>${pad(st[1])}  <span class="stat-tag spa">特攻</span>${pad(st[3])}  ` +
+          `<span class="stat-tag def">物防</span>${pad(st[2])}  <span class="stat-tag spd">特防</span>${pad(st[4])}  <span class="stat-tag spe">速度</span>${pad(st[5])}`;
         document.getElementById("res-dims").innerHTML = renderComparisonBars(
           playerVec,
           sp.pokeVec,
@@ -1267,12 +1279,15 @@
       }
 
       function swapDeity(idx) {
-        if (!_deityResult) return;
+        if (!_deityResult || !_speciesResult) return;
         const d = _deityResult.top[idx];
         if (!d) return;
         renderDeityCard(d);
         renderTopTags();
         renderDeityChoices(_deityResult);
+        // 更新人格描述中的神祇文本
+        document.getElementById("res-personality").innerHTML =
+          renderPersonality(_speciesResult.playerVec, _alignmentResult, d);
       }
 
       function renderDeityText(deity) {
@@ -1378,15 +1393,42 @@
       //  入口
       // ═══════════════════════════════════════════════════
       document.addEventListener("DOMContentLoaded", () => {
-        document
-          .getElementById("btn-start")
-          .addEventListener("click", startQuiz);
+        document.getElementById("btn-start").addEventListener("click", startQuiz);
         document.getElementById("btn-restart").addEventListener("click", () => {
-          STATE.answers = [];
-          STATE.accumulator = {};
-          STATE.questionIndex = 0;
+          STATE.answers = []; STATE.accumulator = {}; STATE.questionIndex = 0;
           showScreen("welcome");
         });
+
+        const saved = loadState();
+        if (saved) {
+          const btnResume = document.getElementById("btn-resume");
+          const btnView = document.getElementById("btn-view-result");
+          const btnStart = document.getElementById("btn-start");
+          // 次要化"开始新旅程"按钮 + 按钮内警告
+          btnStart.className = "btn-outline";
+          btnStart.style.cssText = "";
+          btnStart.textContent = "START YOUR NEW JOURNEY（将删除已有结果）";
+          if (saved.complete && saved.answers && saved.answers.length > 0) {
+            btnView.style.display = "inline-block";
+            btnView.addEventListener("click", () => {
+              STATE.questionIndex = saved.questionIndex || 0;
+              STATE.answers = saved.answers || [];
+              STATE.accumulator = saved.accumulator || {};
+              STATE.sizePref = saved.sizePref;
+              showResults();
+            });
+          } else if (!saved.complete && saved.answers && saved.answers.length > 0) {
+            btnResume.style.display = "inline-block";
+            btnResume.addEventListener("click", () => {
+              STATE.sizePref = saved.sizePref;
+              resumeQuiz(
+                saved.questionIndex || 0,
+                saved.answers || [],
+                saved.accumulator || {},
+              );
+            });
+          }
+        }
       });
     </script>
   </body>
