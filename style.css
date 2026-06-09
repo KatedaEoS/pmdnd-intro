@@ -180,13 +180,26 @@
         font-size: 15px;
         text-align: left;
         cursor: pointer;
-        transition: all 0.15s;
+        transition: background 0.15s;
         position: relative;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+        -webkit-touch-callout: none;
       }
-      .option-btn:hover {
+      .option-btn:focus-visible {
+        outline: 2px solid #c9a036;
+        outline-offset: -2px;
+      }
+      @media (hover: hover) {
+        .option-btn:hover {
+          background: rgba(201, 160, 54, 0.2);
+          border-color: #c9a036;
+          box-shadow: 0 0 12px rgba(201, 160, 54, 0.15);
+        }
+      }
+      .option-btn:active {
         background: rgba(201, 160, 54, 0.2);
         border-color: #c9a036;
-        box-shadow: 0 0 12px rgba(201, 160, 54, 0.15);
       }
       .option-btn .prefix {
         font-family: "MedievalSharp", serif;

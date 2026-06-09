@@ -569,6 +569,7 @@
       }
 
       function selectAnswer(optionIndex) {
+        if (document.activeElement) document.activeElement.blur();
         const q = QUESTIONS[STATE.questionIndex];
         const scores = q.options[optionIndex].scores;
         const elapsed = (Date.now() - STATE.questionShownAt) / 1000;
