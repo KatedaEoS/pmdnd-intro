@@ -192,14 +192,13 @@
       }
       @media (hover: hover) {
         .option-btn:hover {
-          background: rgba(201, 160, 54, 0.2);
-          border-color: #c9a036;
-          box-shadow: 0 0 12px rgba(201, 160, 54, 0.15);
+          background: rgba(245, 230, 200, 0.85);
+          border-color: #b8956a;
         }
       }
       .option-btn:active {
-        background: rgba(201, 160, 54, 0.2);
-        border-color: #c9a036;
+        background: rgba(245, 230, 200, 0.85);
+        border-color: #b8956a;
       }
       .option-btn .prefix {
         font-family: "MedievalSharp", serif;
