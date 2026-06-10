@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PMDnD 性格测试</title>
     <link
-      href="https://fonts.loli.net/css2?family=MedievalSharp&family=Noto+Serif+SC:wght@400;700&display=swap"
+      href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -792,18 +792,17 @@
         let raw = RACE_DIMS.map((d) => STATE.accumulator[d] || 0);
         let player = raw.map((v) => normCDF(v, nRace));
 
-        // 体型惩罚：玩家偏好 vs 宝可梦实际体型
-        const sizeOrder = { 小型: 0, 中型: 1, 大型: 2 };
-        const prefSizeMap = { 小型: 0, 中小: 0.5, 中大: 1.5, 大型: 2 };
-        const prefSizeVal = prefSizeMap[STATE.sizePref] ?? 1; // 默认中型
+        // 体型惩罚：玩家偏好身高 vs 宝可梦实际身高
+        const prefSizeMap = { 小型: 0.6, 中小: 1.2, 中大: 1.8, 大型: 2.4 };
+        const prefHeight = prefSizeMap[STATE.sizePref] ?? 1.5;
 
         let results = [];
         for (const s of PMDND_DATA.species) {
           if (EXCLUDED.has(s[0])) continue;
           const pokeVec = [s[4], s[5], s[6], s[7], s[8]];
           const d = manhattan(player, pokeVec);
-          const pokeSizeVal = sizeOrder[s[3]] ?? 1;
-          const sizePenalty = Math.abs(prefSizeVal - pokeSizeVal) * 3.0;
+          const pokeHeight = s[15] ?? 1.5; // height_m at index 15
+          const sizePenalty = Math.abs(prefHeight - pokeHeight) * 2.0;
           results.push({
             id: s[0],
             name: s[1],

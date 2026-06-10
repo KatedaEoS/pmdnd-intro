@@ -1,6 +1,12 @@
 /* ═══════════════════════════════════════════════════
    PMDnD 主题 — 中世纪奇幻 D&D 风格
    ═══════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "MedievalSharp";
+  src: url("fonts/MedievalSharp.woff2") format("woff2");
+  font-display: swap;
+}
 :root {
   --parchment: #f2e6c9;
   --parchment-dark: #e4d3a9;
