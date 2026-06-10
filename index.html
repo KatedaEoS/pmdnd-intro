@@ -125,11 +125,23 @@
 
         <p
           style="
+            font-size: 12px;
+            color: #8b6f47;
+            text-align: center;
+            margin-top: 20px;
+          "
+        >
+          进度会实时保存在本地浏览器缓存中。<br />使用 Chrome / Firefox
+          以获得最佳体验。
+        </p>
+
+        <p
+          style="
             font-size: 11px;
             color: #8b6f47;
             text-align: center;
             line-height: 1.8;
-            margin-top: 24px;
+            margin-top: 12px;
             max-width: 480px;
           "
         >
@@ -281,7 +293,12 @@
             <div class="label">ALIGNMENT</div>
             <div
               id="res-alignment-name"
-              style="font-size: 20px; font-weight: bold; color: #3a1f0d; text-align: center;"
+              style="
+                font-size: 20px;
+                font-weight: bold;
+                color: #3a1f0d;
+                text-align: center;
+              "
             ></div>
             <div
               id="res-alignment-desc"
@@ -312,7 +329,12 @@
             <div class="label">CLASS</div>
             <div
               id="res-class-name"
-              style="font-size: 20px; font-weight: bold; color: #3a1f0d; text-align: center;"
+              style="
+                font-size: 20px;
+                font-weight: bold;
+                color: #3a1f0d;
+                text-align: center;
+              "
             ></div>
           </div>
           <div
@@ -348,7 +370,7 @@
             ></div>
             <div
               id="res-deity-sub"
-              style="font-size: 12px; color: #6b4c2a; text-align: center;"
+              style="font-size: 12px; color: #6b4c2a; text-align: center"
             ></div>
           </div>
         </div>
@@ -505,6 +527,17 @@
           "
         ></div>
       </div>
+
+      <p
+        style="
+          font-size: 12px;
+          color: #8b6f47;
+          text-align: center;
+          margin-top: 12px;
+        "
+      >
+        结果仅供参考——书写你故事的人，永远都是你自己。
+      </p>
 
       <div
         style="
@@ -1480,17 +1513,21 @@
 
       // ═══════════════════════════════════════════════════
       // ═══════════════════════════════════════════════════
+      document.getElementById("btn-restart").addEventListener("click", () => {
+        STATE.answers = [];
+        STATE.accumulator = {};
+        STATE.questionIndex = 0;
+        showScreen("welcome");
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("btn-start")
+          .addEventListener("click", startQuiz);
         document.getElementById("btn-restart").addEventListener("click", () => {
           STATE.answers = [];
           STATE.accumulator = {};
           STATE.questionIndex = 0;
-          showScreen("welcome");
-        });
-
-document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("btn-start").addEventListener("click", startQuiz);
-        document.getElementById("btn-restart").addEventListener("click", () => {
-          STATE.answers = []; STATE.accumulator = {}; STATE.questionIndex = 0;
           showScreen("welcome");
         });
 
@@ -1502,7 +1539,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // 次要化"开始新旅程"按钮 + 按钮内警告
           btnStart.className = "btn-outline";
           btnStart.style.cssText = "";
-          btnStart.textContent = "START YOUR NEW JOURNEY（将删除已有结果）";
+          btnStart.textContent = "重新测试（将删除已有结果）";
           if (saved.complete && saved.answers && saved.answers.length > 0) {
             btnView.style.display = "inline-block";
             btnView.addEventListener("click", () => {
